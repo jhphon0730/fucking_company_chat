@@ -141,7 +141,17 @@ func (r *chatRepository) GetUserRooms(userID uuid.UUID) ([]RoomListResponse, err
 	query := `
 		SELECT 
 			r.id, 
-			r.name, 
+			CASE 
+				WHEN r.is_group = false THEN (
+					-- 1:1 방이면: 이 방에 참여한 사람 중 '나'가 아닌 사람의 닉네임을 가져옴
+					SELECT u.name
+					FROM room_participants rp2
+					INNER JOIN users u ON rp2.user_id = u.id
+					WHERE rp2.room_id = r.id AND rp2.user_id != ?
+					LIMIT 1
+				)
+				ELSE r.name 
+			END AS name,
 			r.is_group,
 			(SELECT content FROM chat_messages cm WHERE cm.room_id = r.id ORDER BY created_at DESC LIMIT 1) AS last_message,
 			(SELECT created_at FROM chat_messages cm WHERE cm.room_id = r.id ORDER BY created_at DESC LIMIT 1) AS last_message_at,
@@ -152,7 +162,9 @@ func (r *chatRepository) GetUserRooms(userID uuid.UUID) ([]RoomListResponse, err
 		ORDER BY last_message_at DESC NULLS LAST
 	`
 
-	if err := r.db.Raw(query, userID).Scan(&rooms).Error; err != nil {
+	// 첫 번째 ? : rp2.user_id != ? (상대방 찾기 용도)
+	// 두 번째 ? : rp.user_id = ? (내 방 목록 필터링 용도)
+	if err := r.db.Raw(query, userID, userID).Scan(&rooms).Error; err != nil {
 		return nil, err
 	}
 
