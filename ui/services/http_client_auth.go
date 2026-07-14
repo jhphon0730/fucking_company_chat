@@ -6,6 +6,9 @@ import (
 	"fmt"
 	"net/http"
 	"ui/services/model"
+
+	"github.com/google/uuid"
+	"github.com/gorilla/websocket"
 )
 
 type RegisterRequest struct {
@@ -118,4 +121,29 @@ func (s *HTTPClientService) FindAllUsers() (*APIResponse[FindAllUsersResponse], 
 	}
 
 	return apiResp, nil
+}
+
+func (s *HTTPClientService) SendMessage(roomID uuid.UUID, senderID uuid.UUID, receiverID *uuid.UUID, content string) error {
+	s.chatMu.Lock()
+	conn := s.chatConn
+	s.chatMu.Unlock()
+
+	if conn == nil {
+		return fmt.Errorf("웹소켓 연결이 끊겨있습니다")
+	}
+
+	msg := model.WSMessage{
+		Type:       model.TypeTalkMessage,
+		RoomID:     &roomID,
+		ReceiverID: receiverID,
+		SenderID:   senderID,
+		Content:    content,
+	}
+
+	payload, err := json.Marshal(msg)
+	if err != nil {
+		return err
+	}
+
+	return conn.WriteMessage(websocket.TextMessage, payload)
 }

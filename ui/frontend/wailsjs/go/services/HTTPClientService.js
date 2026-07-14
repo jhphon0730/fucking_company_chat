@@ -30,6 +30,10 @@ export function Register(arg1) {
   return window['go']['services']['HTTPClientService']['Register'](arg1);
 }
 
+export function SendMessage(arg1, arg2, arg3, arg4) {
+  return window['go']['services']['HTTPClientService']['SendMessage'](arg1, arg2, arg3, arg4);
+}
+
 export function Startup(arg1) {
   return window['go']['services']['HTTPClientService']['Startup'](arg1);
 }
