@@ -21,8 +21,8 @@ export default function OnlineLayout() {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-100 p-3 text-slate-800 sm:p-4 lg:p-6">
-      <div className="mx-auto flex min-h-[calc(100vh-2rem)] max-w-7xl overflow-hidden rounded-[24px] border border-slate-200 bg-white shadow-[0_8px_30px_rgba(15,23,42,0.08)]">
+    <div className="bg-slate-100 text-slate-800 h-screen max-h-screen overflow-hidden p-3">
+      <div className="mx-auto flex max-w-7xl overflow-hidden rounded-[24px] border border-slate-200 bg-white shadow-[0_8px_30px_rgba(15,23,42,0.08)] h-full">
         {/* 데스크톱 사이드바 */}
         <aside className="hidden w-80 flex-col border-r border-slate-200 bg-slate-50 lg:flex">
           <div className="flex items-center justify-between border-b border-slate-200 px-5 py-4">
@@ -143,7 +143,7 @@ export default function OnlineLayout() {
           </div>
         </aside>
 
-        <section className="flex-1 bg-white">
+        <section className="flex-1 max-h-full bg-white">
           <div className="flex items-center justify-between border-b border-slate-200 px-4 py-3 lg:hidden">
             <button
               type="button"
