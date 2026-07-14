@@ -37,6 +37,7 @@ type RoomListResponse struct {
 	ID            uuid.UUID  `json:"id"`
 	Name          string     `json:"name"`
 	LastMessage   string     `json:"last_message"`
+	IsGroup       bool       `json:"is_group"`        // 1:1방과 그룹방 구분 플래그
 	LastMessageAt *time.Time `json:"last_message_at"` // 메시지가 없을 수도 있으므로 포인터
 	UnreadCount   int        `json:"unread_count"`
 }
