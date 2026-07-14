@@ -249,5 +249,7 @@ func (h *chatHandler) GetUserRooms(c *gin.Context) {
 		return
 	}
 
-	httputil.OKMessage(c, http.StatusOK, "채팅방 목록 조회 성공", rooms)
+	httputil.OKMessage(c, http.StatusOK, "채팅방 목록 조회 성공", gin.H{
+		"rooms": rooms,
+	})
 }
