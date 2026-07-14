@@ -9,6 +9,8 @@ export function DisconnectWebSocket():Promise<void>;
 
 export function FindAllUsers():Promise<services.APIResponse_ui_services_FindAllUsersResponse_>;
 
+export function GetUserRooms():Promise<services.APIResponse_ui_services_GetUserRoomsResponse_>;
+
 export function Login(arg1:services.LoginRequest):Promise<services.APIResponse_ui_services_LoginResponse_>;
 
 export function Register(arg1:services.RegisterRequest):Promise<void>;

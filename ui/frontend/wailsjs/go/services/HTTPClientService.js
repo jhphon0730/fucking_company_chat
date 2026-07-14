@@ -14,6 +14,10 @@ export function FindAllUsers() {
   return window['go']['services']['HTTPClientService']['FindAllUsers']();
 }
 
+export function GetUserRooms() {
+  return window['go']['services']['HTTPClientService']['GetUserRooms']();
+}
+
 export function Login(arg1) {
   return window['go']['services']['HTTPClientService']['Login'](arg1);
 }

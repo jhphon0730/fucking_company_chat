@@ -7,8 +7,10 @@ import OfflineLayout from "./components/layouts/OfflineLayout";
 import LoginPage from "./pages/offline/LoginPage";
 import RegisterPage from "./pages/offline/RegisterPage";
 
-import FriendsPage from "./pages/online/FriendsPage";
 import OnlineLayout from "./components/layouts/OnlineLayout";
+import FriendsPage from "./pages/online/FriendsPage";
+import ChatsPage from "./pages/online/ChatsPage";
+
 import useAuthStore from "./stores/authStore";
 import { ConnectWebSocket, DisconnectWebSocket } from "../wailsjs/go/services/HTTPClientService";
 
@@ -35,7 +37,7 @@ function App() {
 
         <Route element={<OnlineLayout />}>
           <Route path="online/friends" element={<FriendsPage />} />
-          <Route path="online/chats" element={<>추가 예정</>} />
+          <Route path="online/chats" element={<ChatsPage />} />
         </Route>
       </Routes>
     </HashRouter>
