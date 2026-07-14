@@ -1,8 +1,12 @@
 import { useEffect, useState, useRef } from "react";
 import { Send } from "lucide-react";
+
 import useAuthStore from "../../stores/authStore";
-import { GetChatMessages, SendMessage } from "../../../wailsjs/go/services/HTTPClientService";
+
 import { model } from "../../../wailsjs/go/models";
+import { EventsOn, EventsOff } from "../../../wailsjs/runtime"
+import { GetChatMessages, SendMessage } from "../../../wailsjs/go/services/HTTPClientService";
+import { TypeTalkMessage } from "../../types/msg";
 
 interface ChatRoomPageProps {
   roomId: string;
@@ -15,18 +19,19 @@ const ChatRoomPage = ({ roomId, onBack }: ChatRoomPageProps) => {
   const myUser = useAuthStore((state) => state.user);
   const scrollRef = useRef<HTMLDivElement>(null);
 
+  const fetchMessages = async () => {
+    try {
+      const res = await GetChatMessages(roomId, "", 30);
+      if (res?.data?.messages) {
+        setMessages([...res.data.messages].reverse());
+      }
+    } catch (err) {
+      console.error("메시지 로드 실패:", err);
+    }
+  };
+
   // 과거 메시지 로드
   useEffect(() => {
-    const fetchMessages = async () => {
-      try {
-        const res = await GetChatMessages(roomId, "", 30);
-        if (res?.data?.messages) {
-          setMessages([...res.data.messages].reverse());
-        }
-      } catch (err) {
-        console.error("메시지 로드 실패:", err);
-      }
-    };
     void fetchMessages();
   }, [roomId]);
 
@@ -47,6 +52,22 @@ const ChatRoomPage = ({ roomId, onBack }: ChatRoomPageProps) => {
       console.error("전송 실패:", e);
     }
   };
+
+  useEffect(() => {
+    // TALK 타입 메시지만 수신
+    const handleTalkMessage = (msg: model.WSMessage) => {
+      // 현재 보고 있는 방과 같은 방 메시지인지 확인 후 반영
+      if (msg.room_id?.toString() === roomId) {
+        void fetchMessages()
+      }
+    };
+
+    EventsOn(TypeTalkMessage, handleTalkMessage); // "TALK" 이벤트 구독
+
+    return () => {
+      EventsOff(TypeTalkMessage);
+    };
+  }, [roomId]);
 
   return (
     <div className="h-full flex flex-col flex-1 bg-slate-50">

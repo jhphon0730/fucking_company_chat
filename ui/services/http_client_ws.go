@@ -120,3 +120,7 @@ func (s *HTTPClientService) websocketEndpoint() (string, error) {
 
 	return parsedURL.String(), nil
 }
+
+func (s *HTTPClientService) EmptyFn1() *model.WSMessage {
+	return nil
+}

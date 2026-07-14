@@ -168,6 +168,27 @@ export namespace model {
 		    return a;
 		}
 	}
+	
+	export class WSMessage {
+	    type: string;
+	    sender_id: number[];
+	    room_id?: number[];
+	    receiver_id?: number[];
+	    content: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new WSMessage(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.type = source["type"];
+	        this.sender_id = source["sender_id"];
+	        this.room_id = source["room_id"];
+	        this.receiver_id = source["receiver_id"];
+	        this.content = source["content"];
+	    }
+	}
 
 }
 

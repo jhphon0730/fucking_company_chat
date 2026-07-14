@@ -10,6 +10,10 @@ export function DisconnectWebSocket() {
   return window['go']['services']['HTTPClientService']['DisconnectWebSocket']();
 }
 
+export function EmptyFn1() {
+  return window['go']['services']['HTTPClientService']['EmptyFn1']();
+}
+
 export function FindAllUsers() {
   return window['go']['services']['HTTPClientService']['FindAllUsers']();
 }
