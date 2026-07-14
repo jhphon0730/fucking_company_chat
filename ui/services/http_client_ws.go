@@ -1,10 +1,13 @@
 package services
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/url"
+	"ui/services/model"
 
 	"github.com/gorilla/websocket"
+	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
 const websocketPath = "/ws"
@@ -71,10 +74,18 @@ func (s *HTTPClientService) readPump() {
 	}
 
 	for {
-		if _, _, err := conn.ReadMessage(); err != nil {
+		_, message, err := conn.ReadMessage()
+		if err != nil {
 			s.cleanupWebSocketConnection(conn)
 			return
 		}
+
+		var wsMsg model.WSMessage
+		if err := json.Unmarshal(message, &wsMsg); err != nil {
+			continue
+		}
+
+		runtime.EventsEmit(s.ctx, string(wsMsg.Type), wsMsg)
 	}
 }
 
