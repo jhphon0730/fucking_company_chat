@@ -14,6 +14,10 @@ export function FindAllUsers() {
   return window['go']['services']['HTTPClientService']['FindAllUsers']();
 }
 
+export function GetChatMessages(arg1, arg2, arg3) {
+  return window['go']['services']['HTTPClientService']['GetChatMessages'](arg1, arg2, arg3);
+}
+
 export function GetUserRooms() {
   return window['go']['services']['HTTPClientService']['GetUserRooms']();
 }

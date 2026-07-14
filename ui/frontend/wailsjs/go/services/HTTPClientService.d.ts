@@ -9,6 +9,8 @@ export function DisconnectWebSocket():Promise<void>;
 
 export function FindAllUsers():Promise<services.APIResponse_ui_services_FindAllUsersResponse_>;
 
+export function GetChatMessages(arg1:string,arg2:string,arg3:number):Promise<services.APIResponse_ui_services_GetMessagesResponse_>;
+
 export function GetUserRooms():Promise<services.APIResponse_ui_services_GetUserRoomsResponse_>;
 
 export function Login(arg1:services.LoginRequest):Promise<services.APIResponse_ui_services_LoginResponse_>;

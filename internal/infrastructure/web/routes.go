@@ -43,6 +43,7 @@ func (s *server) registerRoutes() error {
 		{
 			v1_room.GET("", chatHandler.GetUserRooms)
 			v1_room.POST("", chatHandler.CreateRoom)
+			v1_room.GET("/:room_id/messages", chatHandler.GetChatMessages)
 			v1_room.POST("/:room_id/participants", chatHandler.AddParticipants)
 			v1_room.PATCH("/:room_id/read", chatHandler.ReadRoom)
 		}
