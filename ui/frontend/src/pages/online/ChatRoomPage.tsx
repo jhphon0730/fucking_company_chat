@@ -70,7 +70,7 @@ const ChatRoomPage = ({ roomId, onBack }: ChatRoomPageProps) => {
   }, [roomId]);
 
   return (
-    <div className="h-full flex flex-col flex-1 bg-slate-50">
+    <div className="h-full flex flex-col bg-slate-50">
       <div className="flex items-center gap-2 border-b bg-white p-4">
         <button onClick={onBack} className="rounded-lg p-2 transition hover:bg-slate-100">
           ←
@@ -111,7 +111,7 @@ const ChatRoomPage = ({ roomId, onBack }: ChatRoomPageProps) => {
         })}
       </div>
 
-      <div className="border-t bg-white p-4 mt-5">
+      <div className="border-t bg-white p-2 lg:min-h-0 min-h-[120px]">
         <div className="flex gap-2">
           <input
             className="flex-1 min-w-0 rounded-lg border border-slate-200 p-2 outline-none"
@@ -122,7 +122,7 @@ const ChatRoomPage = ({ roomId, onBack }: ChatRoomPageProps) => {
           />
           <button
             onClick={handleSend}
-            className="shrink-0 rounded-lg bg-slate-900 p-2 text-white transition hover:bg-slate-800"
+            className="rounded-lg bg-slate-900 p-2 text-white transition hover:bg-slate-800"
           >
             <Send size={18} />
           </button>
