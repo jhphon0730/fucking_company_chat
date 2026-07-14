@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { Send } from "lucide-react";
 
+import useFriendStore from "../../stores/friendStore";
 import useAuthStore from "../../stores/authStore";
 
 import { model } from "../../../wailsjs/go/models";
@@ -10,14 +11,22 @@ import { TypeTalkMessage } from "../../types/msg";
 
 interface ChatRoomPageProps {
   roomId: string;
+  roomName: string;
+  isGroupChat: boolean;
+
   onBack: () => void;
 }
 
-const ChatRoomPage = ({ roomId, onBack }: ChatRoomPageProps) => {
+const ChatRoomPage = ({ roomId, roomName, isGroupChat, onBack }: ChatRoomPageProps) => {
   const [messages, setMessages] = useState<model.ChatMessage[]>([]);
   const [input, setInput] = useState("");
-  const myUser = useAuthStore((state) => state.user);
+  const [targetFriend, setTargetFriend] = useState<model.User>()
+
   const scrollRef = useRef<HTMLDivElement>(null);
+
+  const myUser = useAuthStore((state) => state.user);
+  const getFriends = useFriendStore((state) => state.getFriends)
+
 
   const fetchMessages = async () => {
     try {
@@ -29,6 +38,14 @@ const ChatRoomPage = ({ roomId, onBack }: ChatRoomPageProps) => {
       console.error("메시지 로드 실패:", err);
     }
   };
+
+  // 방 입장 시에 상대방 ID 추출 (그룹 아닐 시에)
+  useEffect(() => {
+    if (isGroupChat) { return }
+
+    const findUser = getFriends().filter((item) => item.name == roomName)[0]
+    setTargetFriend(findUser)
+  }, [roomId])
 
   // 과거 메시지 로드
   useEffect(() => {
@@ -46,7 +63,7 @@ const ChatRoomPage = ({ roomId, onBack }: ChatRoomPageProps) => {
   const handleSend = async () => {
     if (!input.trim()) return;
     try {
-      await SendMessage(roomId, myUser?.id, null, input);
+      await SendMessage(roomId, myUser?.id, targetFriend?.id || null, input);
       setInput("");
     } catch (e) {
       console.error("전송 실패:", e);

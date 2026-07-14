@@ -50,7 +50,7 @@ const ChatsPage = () => {
   };
 
   if (selectedRoomId) {
-    return <ChatRoomPage roomId={selectedRoomId} onBack={() => setSelectedRoomId(null)} />;
+    return <ChatRoomPage roomId={selectedRoomId} roomName={rooms.filter((item) => item.id == selectedRoomId)[0].name} isGroupChat={rooms.filter((item) => item.id == selectedRoomId)[0].is_group} onBack={() => setSelectedRoomId(null)} />;
   }
 
   return (

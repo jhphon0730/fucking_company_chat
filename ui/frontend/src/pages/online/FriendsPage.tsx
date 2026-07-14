@@ -5,10 +5,13 @@ import { model } from "../../../wailsjs/go/models";
 import { FindAllUsers } from "../../../wailsjs/go/services/HTTPClientService";
 
 import useAuthStore from "../../stores/authStore";
+import useFriendStore from "../../stores/friendStore";
 import { ShowAPIError } from "../../utils/alert";
 
 const FriendsPage = () => {
   const user = useAuthStore((state) => state.user);
+  const setFriendsHandler = useFriendStore((state) => state.setFriends)
+
   const [friends, setFriends] = useState<model.User[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -22,6 +25,9 @@ const FriendsPage = () => {
       const res = await FindAllUsers();
       const list = Array.isArray(res?.data?.users) ? res.data.users : [];
       setFriends(list);
+      setFriendsHandler(list);
+
+      // useState 저장
     } catch (error) {
       ShowAPIError(error, "친구 목록 조회 실패")
       console.error(error);
